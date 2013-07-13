@@ -46,5 +46,6 @@ while True:
         ledMode( 14, GPIO.HIGH if temp_c < 27 else GPIO.LOW )
         ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
         ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
-	print 'Temperature = {0:.2f} C ({1:.2f} F)'.format( temp_c, temp_f )
+	ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
+	print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
 	time.sleep(1)
