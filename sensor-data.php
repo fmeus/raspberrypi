@@ -163,6 +163,19 @@
         }
     }
 
+    function process_csv_log_data() {
+        $results = query_timeout( "select s.sensor_id, s.sensor_type, s.sensor_name, s.sensor_location, d.timestamp, d.value from sensors s, sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
+        header("Content-type: text/csv");
+        echo 'timestamp,temperature'.NEWLINE;
+
+        while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
+            echo $row['timestamp'];
+            echo ',';
+            echo $row['value'].NEWLINE;
+       }
+    }
+
+
 /* ============================================================================================== */
 /* Create SQLite tables                                                                           */
 /* ============================================================================================== */
@@ -230,6 +243,10 @@
 
         case 'list_data';
             process_list_log_data();
+        break;
+
+        case 'csv_data';
+            process_csv_log_data();
         break;
 
         case 'drop';
