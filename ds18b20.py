@@ -4,6 +4,7 @@ import os
 import glob
 import time
 import RPi.GPIO as GPIO
+import urllib2 as url
  
 os.system( 'modprobe w1-gpio' )
 os.system( 'modprobe w1-therm' )
