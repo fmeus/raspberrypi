@@ -35,9 +35,11 @@
                                                               , :sensor_name
                                                               , :sensor_location )' );
 
-            $stmt_sensor_data = $db->prepare( 'insert into sensor_data( sensor_id
+            $stmt_sensor_data = $db->prepare( 'insert into sensor_data( timestamp
+                                                                      , sensor_id
                                                                       , value )
-                                                                values( :sensor_id
+                                                                values( datetime( \'now\', \'localtime\' )
+                                                                      , :sensor_id
                                                                       , :value )' );
         }
         $db->busyTimeout( 0 );
@@ -127,11 +129,10 @@
 
 
 /* ============================================================================================== */
-/* List sensor data                                                                                */
+/* List sensor data                                                                               */
 /* ============================================================================================== */
     function process_list_log_data() {
-        $results = query_timeout( "select s.sensor_id ,   s.sensor_type ,   s.sensor_name ,   s.sensor_location ,   d.timestamp ,   d.value from sensors s ,   sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
-        $results = query_timeout( "select * from sensor_data" );
+        $results = query_timeout( "select s.sensor_id, s.sensor_type, s.sensor_name, s.sensor_location, d.timestamp, d.value from sensors s, sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
 
         echo str_pad( 'ID', 5, ' ', STR_PAD_LEFT) ;
         echo ' ';
@@ -143,24 +144,22 @@
         echo ' ';
         echo str_pad( 'TIMESTMAP', 20, ' ', STR_PAD_RIGHT);
         echo ' ';
-        echo str_pad( 'VALUE', 10, ' ', STR_PAD_LEFT).NEWLINE;
+        echo str_pad( 'VALUE', 10, ' ', STR_PAD_RIGHT).NEWLINE;
         echo ' ';
         echo str_pad( '', 100, '-', STR_PAD_LEFT).NEWLINE;
 
         while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
-            echo print_r( $row, true );
-            // echo str_pad( $row['sensor_id'], 5, ' ', STR_PAD_LEFT);
-            // echo ' ';
-            // echo str_pad( $row['sensor_type'], 12, ' ', STR_PAD_RIGHT);
-            // echo ' ';
-            // echo str_pad( $row['sensor_name'], 25, ' ', STR_PAD_RIGHT);
-            // echo ' ';
-            // echo str_pad( $row['sensor_location'], 25, ' ', STR_PAD_RIGHT);
-            // echo ' ';
-            // echo str_pad( $row['timestamp'], 25, ' ', STR_PAD_RIGHT);
-            // echo ' ';
-            // echo str_pad( $row['value'], 10, ' ', STR_PAD_LEFT).NEWLINE;
-            // echo ' ';
+            echo str_pad( $row['sensor_id'], 5, ' ', STR_PAD_LEFT);
+            echo ' ';
+            echo str_pad( $row['sensor_type'], 12, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['sensor_name'], 25, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['sensor_location'], 25, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['timestamp'], 20, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['value'], 10, ' ', STR_PAD_RIGHT).NEWLINE;
         }
     }
 
@@ -226,9 +225,7 @@
 
         case 'log_data';
             process_prepare_statements();
-            $id = $_GET['id'];
-            $value = $_GET['value'];
-            process_log_data( $id, $value );
+            process_log_data( (int)$_GET['id'], (float)$_GET['value'] );
         break;
 
         case 'list_data';
