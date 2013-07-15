@@ -11,9 +11,15 @@ os.system( 'modprobe w1-therm' )
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob( base_dir + '28*' )[0]
 device_file = device_folder + '/w1_slave'
+log_host = 'http://<insert your host>/raspberrypi/'
 
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
+
+def logData( id, value):
+    response = url.urlopen( log_host + 'sensor_data.php?action=log_data&id={0}&value={1}'.format( id, value ) )
+    html = response.read()
+    return
 
 def ledMode( PiPin, mode ):
     GPIO.setup( PiPin, GPIO.OUT )
@@ -49,4 +55,5 @@ while True:
     ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
     ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
     print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
+    logData( 1, temp_c )
     time.sleep(15)
