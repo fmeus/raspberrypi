@@ -131,7 +131,6 @@
 /* ============================================================================================== */
     function process_list_log_data() {
         $results = query_timeout( "select s.sensor_id ,   s.sensor_type ,   s.sensor_name ,   s.sensor_location ,   d.timestamp ,   d.value from sensors s ,   sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
-
         $results = query_timeout( "select * from sensor_data" );
 
         echo str_pad( 'ID', 5, ' ', STR_PAD_LEFT) ;
@@ -150,18 +149,18 @@
 
         while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
             echo print_r( $row, true );
-            echo str_pad( $row['sensor_id'], 5, ' ', STR_PAD_LEFT);
-            echo ' ';
-            echo str_pad( $row['sensor_type'], 12, ' ', STR_PAD_RIGHT);
-            echo ' ';
-            echo str_pad( $row['sensor_name'], 25, ' ', STR_PAD_RIGHT);
-            echo ' ';
-            echo str_pad( $row['sensor_location'], 25, ' ', STR_PAD_RIGHT);
-            echo ' ';
-            echo str_pad( $row['timestamp'], 25, ' ', STR_PAD_RIGHT);
-            echo ' ';
-            echo str_pad( $row['value'], 10, ' ', STR_PAD_LEFT).NEWLINE;
-            echo ' ';
+            // echo str_pad( $row['sensor_id'], 5, ' ', STR_PAD_LEFT);
+            // echo ' ';
+            // echo str_pad( $row['sensor_type'], 12, ' ', STR_PAD_RIGHT);
+            // echo ' ';
+            // echo str_pad( $row['sensor_name'], 25, ' ', STR_PAD_RIGHT);
+            // echo ' ';
+            // echo str_pad( $row['sensor_location'], 25, ' ', STR_PAD_RIGHT);
+            // echo ' ';
+            // echo str_pad( $row['timestamp'], 25, ' ', STR_PAD_RIGHT);
+            // echo ' ';
+            // echo str_pad( $row['value'], 10, ' ', STR_PAD_LEFT).NEWLINE;
+            // echo ' ';
         }
     }
 
@@ -228,7 +227,7 @@
         case 'log_data';
             process_prepare_statements();
             $id = $_GET['id'];
-            $id = $_GET['value'];
+            $value = $_GET['value'];
             process_log_data( $id, $value );
         break;
 
