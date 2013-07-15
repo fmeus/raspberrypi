@@ -120,11 +120,50 @@
     function process_log_data( $id, $value ) {
         global $db, $stmt_sensor_data;
 
-        $stmt_sensor_data->bindValue( ':sensor_id', $type, SQLITE3_INTEGER );
-        $stmt_sensor_data->bindValue( ':value', $name, SQLITE3_REAL );
+        $stmt_sensor_data->bindValue( ':sensor_id', $id, SQLITE3_INTEGER );
+        $stmt_sensor_data->bindValue( ':value', $value, SQLITE3_FLOAT );
         execute_timeout( $stmt_sensor_data );
     }
 
+
+/* ============================================================================================== */
+/* List sensor data                                                                                */
+/* ============================================================================================== */
+    function process_list_log_data() {
+        $results = query_timeout( "select s.sensor_id ,   s.sensor_type ,   s.sensor_name ,   s.sensor_location ,   d.timestamp ,   d.value from sensors s ,   sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
+
+        $results = query_timeout( "select * from sensor_data" );
+
+        echo str_pad( 'ID', 5, ' ', STR_PAD_LEFT) ;
+        echo ' ';
+        echo str_pad( 'TYPE', 12, ' ', STR_PAD_RIGHT) ;
+        echo ' ';
+        echo str_pad( 'NAME', 25, ' ', STR_PAD_RIGHT) ;
+        echo ' ';
+        echo str_pad( 'LOCATION', 25, ' ', STR_PAD_RIGHT);
+        echo ' ';
+        echo str_pad( 'TIMESTMAP', 20, ' ', STR_PAD_RIGHT);
+        echo ' ';
+        echo str_pad( 'VALUE', 10, ' ', STR_PAD_LEFT).NEWLINE;
+        echo ' ';
+        echo str_pad( '', 100, '-', STR_PAD_LEFT).NEWLINE;
+
+        while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
+            echo print_r( $row, true );
+            echo str_pad( $row['sensor_id'], 5, ' ', STR_PAD_LEFT);
+            echo ' ';
+            echo str_pad( $row['sensor_type'], 12, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['sensor_name'], 25, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['sensor_location'], 25, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['timestamp'], 25, ' ', STR_PAD_RIGHT);
+            echo ' ';
+            echo str_pad( $row['value'], 10, ' ', STR_PAD_LEFT).NEWLINE;
+            echo ' ';
+        }
+    }
 
 /* ============================================================================================== */
 /* Create SQLite tables                                                                           */
@@ -191,6 +230,10 @@
             $id = $_GET['id'];
             $id = $_GET['value'];
             process_log_data( $id, $value );
+        break;
+
+        case 'list_data';
+            process_list_log_data();
         break;
 
         case 'drop';
