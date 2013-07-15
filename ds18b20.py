@@ -16,9 +16,9 @@ GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
 
 def ledMode( PiPin, mode ):
-  GPIO.setup( PiPin, GPIO.OUT )
-  GPIO.output( PiPin, mode )
-  return
+    GPIO.setup( PiPin, GPIO.OUT )
+    GPIO.output( PiPin, mode )
+    return
 
 def read_temp_raw():
     f = open(device_file, 'r')
@@ -42,12 +42,11 @@ ledMode( 14, GPIO.LOW )
 ledMode( 15, GPIO.LOW )
 ledMode( 18, GPIO.LOW )
 
-	
 while True:
-	temp_c, temp_f = read_temp()
-        ledMode( 14, GPIO.HIGH if temp_c < 27 else GPIO.LOW )
-        ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
-        ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
-	ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
-	print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
-	time.sleep(1)
+    temp_c, temp_f = read_temp()
+    ledMode( 14, GPIO.HIGH if temp_c < 27 else GPIO.LOW )
+    ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
+    ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
+    ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
+    print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
+    time.sleep(15)
