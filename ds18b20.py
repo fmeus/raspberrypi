@@ -18,10 +18,13 @@ GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
 
 def logData( id, value):
-    addr = log_host + 'sensor-data.php?action=log_data&id={0}&value={1}'.format( id, value )
-    response = url.urlopen( addr )
-    html = response.read()
-    return
+    try:
+        addr = log_host + 'sensor-data.php?action=log_data&id={0}&value={1}'.format( id, value )
+        response = url.urlopen( addr )
+        html = response.read()
+        return
+    exception exception:
+        return
 
 def ledMode( PiPin, mode ):
     GPIO.setup( PiPin, GPIO.OUT )
