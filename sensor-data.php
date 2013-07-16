@@ -164,7 +164,7 @@
     }
 
     function process_csv_log_data() {
-        $results = query_timeout( "select s.sensor_id, s.sensor_type, s.sensor_name, s.sensor_location, d.timestamp, d.value from sensors s, sensor_data d where s.sensor_id = d.sensor_id order by d.timestamp" );
+        $results = query_timeout( "select s.sensor_id, s.sensor_type, s.sensor_name, s.sensor_location, d.timestamp, d.value from sensors s, sensor_data d where s.sensor_id = d.sensor_id and d.timestamp > datetime('now', '-8 hours', 'localtime') order by d.timestamp" );
         header("Content-type: text/csv");
         echo 'timestamp,temperature'.NEWLINE;
 
@@ -269,6 +269,13 @@
             process_cleanup();
         break;
 
+        case 'test';
+            $results = query_timeout( "select s.*, datetime('now'), datetime('now', '-2 hours', 'localtime') from sensors s" );
+            while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
+                echo print_r( $row, true );
+            }
+        break;
+
         default;
             echo "No command or invalid command was specified. Known commands are;\n";
             echo "   drop    - Drop SQLite tables\n";
@@ -277,6 +284,8 @@
             echo "   vacuum  - Rebuild entire database\n";
         break;
     }
+
+
 
 
 /* ============================================================================================== */
