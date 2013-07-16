@@ -12,7 +12,7 @@ os.system( 'modprobe w1-therm' )
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob( base_dir + '28*' )[0]
 device_file = device_folder + '/w1_slave'
-log_host = 'http://<insert your host>/raspberrypi/'
+log_host = 'http://www.littlegemsoftware.com/raspberrypi/'
 
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
@@ -23,7 +23,7 @@ def logData( id, value):
         response = url.urlopen( addr )
         html = response.read()
         return
-    exception exception:
+    except exception:
         return
 
 def ledMode( PiPin, mode ):
