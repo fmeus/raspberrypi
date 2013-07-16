@@ -25,6 +25,7 @@ body {
   stroke-width: 1.5px;
 }
 
+
 </style>
 
 
@@ -61,7 +62,7 @@ var line = d3.svg.line()
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function(error, data) {
@@ -71,8 +72,9 @@ d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function(error, data) {
   });
 
   x.domain(d3.extent(data, function(d) { return d.timestamp; }));
-  y.domain(d3.extent(data, function(d) { return d.temperature; }));
-
+  y.domain(d3.extent(data, function(d) { return d.temperature; })).nice();
+  //y.domain([d3.min(data, function (d) { return d.temperature; }), d3.max(data, function (d) { return d.temperature; }) ]);
+  
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
