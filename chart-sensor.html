@@ -3,7 +3,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Raspberry Pi - Sensor Data</title>
 <style>
-
 body {
   font: 10px sans-serif;
 }
@@ -19,23 +18,35 @@ body {
   display: none;
 }
 
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
 .line {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
 }
 
+.y.axis .tick line {
+  fill: none;
+  stroke: silver;
+  shape-rendering: crispEdges;
+}
 
 </style>
-
-
 </head>
 <body>
-	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
-
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
+var margin = {
+    top: 20,
+    right: 50,
+    bottom: 30,
+    left: 50
+},
+width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y-%m-%d %X").parse;
@@ -48,16 +59,27 @@ var y = d3.scale.linear()
 
 var xAxis = d3.svg.axis()
     .scale(x)
+    .tickFormat( function(d) { return d3.time.format('%H:%M')(d); } )
     .orient("bottom");
 
 var yAxis = d3.svg.axis()
     .scale(y)
+    .tickSize(-width,0,0)
+    .tickFormat( d3.format(',.1f') )
     .orient("left");
+
+var yAxis2 = d3.svg.axis()
+    .scale(y)
+    .tickFormat( d3.format(',.1f') )
+    .orient("right");
 
 var line = d3.svg.line()
     .interpolate("basis")
-    .x(function(d) { return x(d.timestamp); })
-    .y(function(d) { return y(d.temperature); });
+    .x(function (d) { return x(d.timestamp); })
+
+.y(function (d) {
+    return y(d.temperature);
+});
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -65,37 +87,50 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function(error, data) {
-  data.forEach(function(d) {
-    d.timestamp = parseDate(d.timestamp);
-    d.temperature = +d.temperature;
-  });
+d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function (error, data) {
+    data.forEach(function (d) {
+        d.timestamp = parseDate(d.timestamp);
+        d.temperature = +d.temperature;
+    });
 
-  x.domain(d3.extent(data, function(d) { return d.timestamp; }));
-  y.domain(d3.extent(data, function(d) { return d.temperature; })).nice();
-  //y.domain([d3.min(data, function (d) { return d.temperature; }), d3.max(data, function (d) { return d.temperature; }) ]);
-  
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+    x.domain(d3.extent(data, function (d) {
+        return d.timestamp;
+    }));
+    y.domain(d3.extent(data, function (d) {
+        return d.temperature;
+    })).nice();
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Temperature (°C)");
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Temperature (°C)");
+
+    svg.append("g")
+        .attr("class", "y2 axis")
+        .attr("transform", "translate(" + width + " ,0)")   
+        .call(yAxis2)
+        .append("text")
+        .attr("transform", "rotate(90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "start")
+        .text("Temperature (°C)");
+
+    svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line);
 });
-
 </script>
 </body>
 </html>
