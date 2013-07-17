@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Raspberry Pi - Sensor Data</title>
+    <title>Raspberry Pi - Sensor Data</title>
 <style>
 body {
   font: 10px sans-serif;
@@ -109,7 +109,7 @@ d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function (error, data) {
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
-        .attr("transform", "rotate(-90)")
+        .attr("transform", "rotate(-90) translate(0,-50)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
@@ -120,7 +120,7 @@ d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function (error, data) {
         .attr("transform", "translate(" + width + " ,0)")   
         .call(yAxis2)
         .append("text")
-        .attr("transform", "rotate(90)")
+        .attr("transform", "rotate(90) translate(0, -50)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "start")
