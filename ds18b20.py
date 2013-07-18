@@ -23,7 +23,7 @@ def logData( id, value):
         response = url.urlopen( addr )
         html = response.read()
         return
-    except exception:
+    exceptx:
         return
 
 def ledMode( PiPin, mode ):
