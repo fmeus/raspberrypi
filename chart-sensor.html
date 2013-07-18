@@ -93,12 +93,8 @@ d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function (error, data) {
         d.temperature = +d.temperature;
     });
 
-    x.domain(d3.extent(data, function (d) {
-        return d.timestamp;
-    }));
-    y.domain(d3.extent(data, function (d) {
-        return d.temperature;
-    })).nice();
+    x.domain(d3.extent(data, function (d) {return d.timestamp; })); 
+    y.domain( [d3.min(data, function (d) {return d.temperature; })-0.1,d3.max(data, function (d) {return d.temperature; })+0.1] ).nice();
 
     svg.append("g")
         .attr("class", "x axis")
