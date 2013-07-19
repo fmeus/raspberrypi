@@ -41,10 +41,10 @@ def read_temp_raw():
 def read_dht22( PiPin ):
     output = subprocess.check_output(["./Adafruit_DHT", "2302", str(PiPin)])
     matches = re.search("Temp =\s+([0-9.]+)", output)
-    if ( matches )
+    if ( matches ):
         logData( 2, float(matches.group(1)) )
     matches = re.search("Hum =\s+([0-9.]+)", output)
-    if ( matches )
+    if ( matches ):
         logData( 3, float(matches.group(1)) )
     print output
     return
