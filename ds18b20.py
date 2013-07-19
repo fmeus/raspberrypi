@@ -74,4 +74,4 @@ while True:
     print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
     logData( 1, temp_c )
     read_dht22(22)
-    time.sleep(15)
+    time.sleep(30)
