@@ -1,55 +1,13 @@
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Raspberry Pi - Sensor Data</title>
-<link rel="shortcut icon" href="http://www.raspberrypi.org/favicon.ico" type="image/vnd.microsoft.icon"/>
-<link rel="icon" href="http://www.raspberrypi.org/favicon.ico" type="image/x-ico"/>
-<style>
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.y.axis line, .y.axis path {
-  fill: none;
-  stroke: #000;
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.y.axis .tick line {
-  fill: none;
-  stroke: silver;
-  shape-rendering: crispEdges;
-}
-
-.ds18b20, .dht22temp, .dht22hum {
-    display: table-cell;
-    background-color: rgb(245, 245, 245);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow:    2px 2px 2px rgba(0, 0, 0, 0.3);
-    box-shadow:         2px 2px 2px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-}
-</style>
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Raspberry Pi - Sensor Data</title>
+        <link rel="shortcut icon" href="http://www.raspberrypi.org/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <link rel="icon" href="http://www.raspberrypi.org/favicon.ico" type="image/x-ico"/>
+        <link rel="stylesheet" href="./chart-sensor.css" type="text/css" />
+        <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src=".chart-sensor.js" charset="utf-8"></script>
+    </head>
 <body>
     <h2>DS18B20 - Temperature</h2>
     <div class="ds18b20"></div>
@@ -60,100 +18,10 @@ body {
     <h2>DHT22 / AM2302 - Humidity</h2>
     <div class="dht22hum"></div>
 
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script>
-
-showChart = function( area, sensor, period, unit ) {
-    var margin = {top: 20, right: 50, bottom: 30, left: 50 },
-        width = 700 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
-
-    var parseDate = d3.time.format("%Y-%m-%d %X").parse;
-
-    var x = d3.time.scale()
-        .range([0, width]);
-
-    var y = d3.scale.linear()
-        .range([height, 0]);
-
-    y.ticks(0.1);
-
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .tickFormat( function(d) { return d3.time.format('%H:%M')(d); } )
-        .orient("bottom");
-
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .tickSize(-width,0,0)
-        .tickFormat( d3.format(',.1f') )
-        .orient("left");
-
-    var yAxis2 = d3.svg.axis()
-        .scale(y)
-        .tickFormat( d3.format(',.1f') )
-        .orient("right");
-
-    var line = d3.svg.line()
-        .interpolate("basis")
-        .x(function (d) { return x(d.timestamp); })
-
-    .y(function (d) {
-        return y(d.temperature);
-    });
-
-    var svg = d3.select( area ).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    d3.csv("/raspberrypi/sensor-data.php?action=csv_data&id="+sensor+"&period="+period, function (error, data) {
-        data.forEach(function (d) {
-            d.timestamp = parseDate(d.timestamp);
-            d.temperature = +d.temperature;
-        });
-
-        x.domain(d3.extent(data, function (d) {return d.timestamp; })); 
-        y.domain( [d3.min(data, function (d) {return d.temperature; })-0.1,d3.max(data, function (d) {return d.temperature; })+0.1] ).nice();
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(-90) translate(0,-50)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text(unit);
-
-        svg.append("g")
-            .attr("class", "y2 axis")
-            .attr("transform", "translate(" + width + " ,0)")   
-            .call(yAxis2)
-            .append("text")
-            .attr("transform", "rotate(90) translate(0, -50)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "start")
-            .text(unit);
-
-        svg.append("path")
-            .datum(data)
-            .attr("class", "line")
-            .attr("d", line);
-    });
-};
-
-showChart( "div.ds18b20", 1, 8, "Temperature (°C)" );
-showChart( "div.dht22temp", 2, 8, "Temperature (°C)" );
-showChart( "div.dht22hum", 3, 8, "Humidity (%)" );
-
-</script>
+    <script>
+    showChart( "div.ds18b20", 1, 8, "Temperature (°C)" );
+    showChart( "div.dht22temp", 2, 8, "Temperature (°C)" );
+    showChart( "div.dht22hum", 3, 8, "Humidity (%)" );
+    </script>
 </body>
 </html>
