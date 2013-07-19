@@ -1,0 +1,43 @@
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.y.axis .tick line {
+  fill: none;
+  stroke: silver;
+  shape-rendering: crispEdges;
+}
+
+.ds18b20, .dht22temp, .dht22hum {
+    display: table-cell;
+    background-color: rgb(245, 245, 245);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow:    2px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow:         2px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+}
