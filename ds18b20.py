@@ -5,6 +5,7 @@ import glob
 import time
 import RPi.GPIO as GPIO
 import urllib2 as url
+import subprocess
  
 os.system( 'modprobe w1-gpio' )
 os.system( 'modprobe w1-therm' )
@@ -37,6 +38,17 @@ def read_temp_raw():
     f.close()
     return lines
  
+def read_dht22( PiPin ):
+    output = subprocess.check_output(["./Adafruit_DHT", "2302", str(PiPin)])
+    matches = re.search("Temp =\s+([0-9.]+)", output)
+    if ( matches )
+        logData( 2, float(matches.group(1)) )
+    matches = re.search("Hum =\s+([0-9.]+)", output)
+    if ( matches )
+        logData( 3, float(matches.group(1)) )
+    print output
+    return
+
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
@@ -61,4 +73,5 @@ while True:
     ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
     print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
     logData( 1, temp_c )
+    read_dht22(22)
     time.sleep(15)
