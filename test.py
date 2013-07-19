@@ -1,8 +1,15 @@
-#!/usr/bin/env python
+#!/user/bin/env python
 
-import urllib2 as url
+import os
+import glob
+import time
+import subprocess
 
-response = url.urlopen( 'http://www.google.com/' )
-html = response.read()
+def testProc( PiPin ):
+    output = subprocess.check_output(["./Adafruit_DHT", "2302", str(PiPin)])
+    print output
+    return
 
-print( html )
+testProc(22)
+
+# print subprocess.check_output(["./Adafruit_DHT", "2302", "22"])
