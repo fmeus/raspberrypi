@@ -1,7 +1,9 @@
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Raspberry Pi - Sensor Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Raspberry Pi - Sensor Data</title>
+<link rel="shortcut icon" href="http://www.raspberrypi.org/favicon.ico" type="image/vnd.microsoft.icon"/>
+<link rel="icon" href="http://www.raspberrypi.org/favicon.ico" type="image/x-ico"/>
 <style>
 body {
   font: 10px sans-serif;
@@ -34,7 +36,6 @@ body {
   stroke: silver;
   shape-rendering: crispEdges;
 }
-
 </style>
 </head>
 <body>
@@ -46,8 +47,8 @@ var margin = {
     bottom: 30,
     left: 50
 },
-width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+width = 1024 - margin.left - margin.right,
+height = 400 - margin.top - margin.bottom;
 
 var parseDate = d3.time.format("%Y-%m-%d %X").parse;
 
@@ -56,6 +57,8 @@ var x = d3.time.scale()
 
 var y = d3.scale.linear()
     .range([height, 0]);
+
+y.ticks(0.1);
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -93,12 +96,8 @@ d3.csv("/raspberrypi/sensor-data.php?action=csv_data", function (error, data) {
         d.temperature = +d.temperature;
     });
 
-    x.domain(d3.extent(data, function (d) {
-        return d.timestamp;
-    }));
-    y.domain(d3.extent(data, function (d) {
-        return d.temperature;
-    })).nice();
+    x.domain(d3.extent(data, function (d) {return d.timestamp; })); 
+    y.domain( [d3.min(data, function (d) {return d.temperature; })-0.1,d3.max(data, function (d) {return d.temperature; })+0.1] ).nice();
 
     svg.append("g")
         .attr("class", "x axis")
