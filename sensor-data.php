@@ -248,7 +248,6 @@
         case 'csv_data';
             $id = (int)$_GET['id'];
             $period = (int)$_GET['period'];
-            $id = 1; $period = 8;
             process_csv_log_data( $id, $period );
         break;
 
