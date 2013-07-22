@@ -10,7 +10,7 @@
     $db = new SQLite3( 'sensor-data.sqlite' );
 
 /* ============================================================================================== */
-/* Perform SQLite query with wait for unlocked state (default 2000ms)                             */
+/* Perform SQLite query with wait for unlocked state (default 6000ms)                             */
 /* ============================================================================================== */
     function query_timeout( $query, $timeout = 6000 ) {
         global $db;
