@@ -7,38 +7,50 @@ import re
 import RPi.GPIO as GPIO
 import urllib2 as url
 import subprocess
- 
+import sqlite3 as sql
+
+# Load kernel modules for 1-wire devices
 os.system( 'modprobe w1-gpio' )
 os.system( 'modprobe w1-therm' )
- 
+
+# Determine location of first found DS18B20 sensor 
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob( base_dir + '28*' )[0]
 device_file = device_folder + '/w1_slave'
-log_host = 'http://www.littlegemsoftware.com/raspberrypi/'
 
+# Configure GPIO
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
 
+# Connect to SQLite database
+con = sql.connect( '/var/sqlite/sensor-data.sqlite' )
+cur = con.cursor()
+
+# Log data to the SQLite database
 def logData( id, value):
     try:
-        addr = log_host + 'sensor-data.php?action=log_data&id={0}&value={1}'.format( id, value )
-        response = url.urlopen( addr )
-        html = response.read()
+        cur.execute( "insert into sensor_data(timestamp,sensor_id,value) values(datetime('now','localtime'), {0}, {1} )".format( id, value ) )
+        con.commit()
         return
     except:
+        if con:
+            con.rollback()
         return
 
+# Controle state for LED pin (turn on/off the connected LED)
 def ledMode( PiPin, mode ):
     GPIO.setup( PiPin, GPIO.OUT )
     GPIO.output( PiPin, mode )
     return
 
+# Read data from the raw device
 def read_temp_raw():
     f = open(device_file, 'r')
     lines = f.readlines()
     f.close()
     return lines
  
+# Determine temperature and humidity from the DHT22/AM2302 sensor
 def read_dht22( PiPin ):
     output = subprocess.check_output(["./Adafruit_DHT", "2302", str(PiPin)])
     matches = re.search("Temp =\s+([0-9.]+)", output)
@@ -49,6 +61,7 @@ def read_dht22( PiPin ):
         logData( 3, float(matches.group(1)) )
     return
 
+# Determine temperature from the DS18B20 sensor
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
@@ -61,6 +74,7 @@ def read_temp():
         temp_f = temp_c * 9.0 / 5.0 + 32.0
         return temp_c, temp_f
 
+# Turn off all LEDs
 ledMode( 14, GPIO.LOW )
 ledMode( 15, GPIO.LOW )
 ledMode( 18, GPIO.LOW )

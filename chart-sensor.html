@@ -9,6 +9,18 @@
         <script type="text/javascript" src="./chart-sensor.js" charset="utf-8"></script>
     </head>
 <body>
+
+    Time frame: <select id="period">
+    <option value="1">1 Hour</option>
+    <option value="2">2 Hour</option>
+    <option value="4">4 Hour</option>
+    <option value="8" selected>8 Hour</option>
+    <option value="12">12 Hour</option>
+    <option value="16">16 Hour</option>
+    <option value="20">20 Hour</option>
+    <option value="24">24 Hour</option>
+    </select>
+
     <h2>DS18B20 - Temperature</h2>
     <div class="ds18b20"></div>
 
@@ -19,9 +31,17 @@
     <div class="dht22hum"></div>
 
     <script type="text/javascript">
-        showChart( "div.ds18b20", 1, 8, "Temperature (°C)" );
-        showChart( "div.dht22temp", 2, 8, "Temperature (°C)" );
-        showChart( "div.dht22hum", 3, 8, "Humidity (%)" );
+        updateChart( period ) {
+            showChart( "div.ds18b20", 1, period, "Temperature (°C)" );
+            showChart( "div.dht22temp", 2, period, "Temperature (°C)" );
+            showChart( "div.dht22hum", 3, period, "Humidity (%)" );
+        }
+
+        updateChart( 8 );
+
+        $('#period').change(function() {
+            alert( 'Changed'.$(this).val() );
+        });
     </script>
 </body>
 </html>
