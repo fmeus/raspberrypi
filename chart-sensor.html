@@ -31,7 +31,7 @@
     <div class="dht22hum"></div>
 
     <script type="text/javascript">
-        updateChart( period ) {
+        function updateChart( period ) {
             showChart( "div.ds18b20", 1, period, "Temperature (°C)" );
             showChart( "div.dht22temp", 2, period, "Temperature (°C)" );
             showChart( "div.dht22hum", 3, period, "Humidity (%)" );
