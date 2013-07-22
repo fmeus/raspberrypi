@@ -1,4 +1,6 @@
 showChart = function( area, sensor, period, unit ) {
+$( area ).empty();
+
     var margin = {top: 20, right: 50, bottom: 30, left: 50 },
         width = 700 - margin.left - margin.right,
         height = 250 - margin.top - margin.bottom;
