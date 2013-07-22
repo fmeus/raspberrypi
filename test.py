@@ -1,15 +1,24 @@
-#!/user/bin/env python
+#!/usr/bin/env python
 
-import os
-import glob
-import time
-import subprocess
+import sqlite3 as sql
 
-def testProc( PiPin ):
-    output = subprocess.check_output(["./Adafruit_DHT", "2302", str(PiPin)])
-    print output
-    return
 
-testProc(22)
+try:
+    con = sql.connect( 'sensor-data.sqlite' )
+    cur = con.cursor()
+    cur.execute( 'select SQLITE_VERSION()' )
+    print cur.fetchone()
 
-# print subprocess.check_output(["./Adafruit_DHT", "2302", "22"])
+    print( "insert into sensor_data(timestamp,sensor_id,value) values(datetime('now','localtime'), {0}, {1} )".format( 1, 27.5 ) )
+    cur.commit()
+
+except sql.Error, e:
+    if con:
+        con.rollback()
+
+    print "Error %s" % e.args[0]
+
+finally:
+    if con:
+        con.close()
+
