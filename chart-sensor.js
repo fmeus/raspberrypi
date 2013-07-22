@@ -43,7 +43,7 @@ showChart = function( area, sensor, period, unit ) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.csv("/raspberrypi/sensor-data.php?action=csv_data&id="+sensor+"&period="+period, function (error, data) {
+    d3.csv("/sensor-data.php?action=csv_data&id="+sensor+"&period="+period, function (error, data) {
         data.forEach(function (d) {
             d.timestamp = parseDate(d.timestamp);
             d.temperature = +d.temperature;
