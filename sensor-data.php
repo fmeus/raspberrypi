@@ -28,16 +28,11 @@
 /* List sensor data                                                                               */
 /* ============================================================================================== */
     function process_csv_log_data( $sensor, $period ) {
-        $results = query_timeout( "select s.sensor_id
-                                   ,      s.sensor_type
-                                   ,      s.sensor_name
-                                   ,      s.sensor_location
+        $results = query_timeout( "select d.sensor_id
                                    ,      d.timestamp
                                    ,      d.value
-                                   from   sensors s
-                                   ,      sensor_data d
-                                   where  s.sensor_id = ${sensor}
-                                   and    s.sensor_id = d.sensor_id
+                                   from   sensor_data d
+                                   where  d.sensor_id = ${sensor}
                                    and    d.timestamp > datetime('now', '-${period} hours', 'localtime')
                                    order by d.timestamp" );
         header("Content-type: text/csv");
