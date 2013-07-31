@@ -1,45 +1,31 @@
 <?php
 /* ========================================================================== */
-/* SQLite tables                                                              */
+/* Globals                                                                    */
 /* ========================================================================== */
     define( 'NEWLINE', "\n");
 
 /* ========================================================================== */
-/* Open SQLite connection                                                     */
+/* Open MySQL connection                                                      */
 /* ========================================================================== */
-    $db = new SQLite3( '/var/sqlite/sensor-data.sqlite' );
-
-/* ========================================================================== */
-/* Perform SQLite query with wait for unlocked state (default 6000ms)         */
-/* ========================================================================== */
-    function query_timeout( $query, $timeout = 6000 ) {
-        global $db;
-
-        if ( $db->busyTimeout( $timeout ) ) {
-            $results = $db->query( $query );
-        }
-
-        $db->busyTimeout( 0 );
-
-        return $results;
-    }
+    $db = new mysqli( 'localhost', 'rpi', 'rpi', 'sensordata' );
 
 /* ========================================================================== */
 /* List sensor data                                                           */
 /* ========================================================================== */
     function process_csv_log_data( $sensor, $period ) {
-        $results = query_timeout( "select d.sensor_id
-                                   ,      d.timestamp
-                                   ,      d.value
-                                   from   sensor_data d
-                                   where  d.sensor_id = ${sensor}
-                                   and    d.timestamp > datetime('now', '-${period} hours', 'localtime')
-                                   order by d.timestamp" );
+        global $db;
+
+        $results = $db->query( "select d.timestamp
+                                ,      d.value
+                                from   sensor_data d
+                                where  d.sensor_id = ${sensor}
+                                and    timestampdiff(HOUR,now(),d.timestamp) <= ${period}
+                                order by d.timestamp" );
 
         header("Content-type: text/csv");
         echo 'timestamp,temperature'.NEWLINE;
 
-        while ( $row = $results->fetchArray( SQLITE3_ASSOC ) ) {
+        while ( $row = mysqli_fetch_assoc( $results ) ) {
             printf('%s,%s'.NEWLINE, $row['timestamp'], $row['value']);
        }
     }
@@ -59,7 +45,7 @@
     }
 
 /* ========================================================================== */
-/* Close SQLite connection                                                    */
+/* Close MySQL connection                                                     */
 /* ========================================================================== */
     $db->close();
 ?>

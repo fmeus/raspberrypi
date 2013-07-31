@@ -7,7 +7,7 @@ import re
 import RPi.GPIO as GPIO
 import urllib2 as url
 import subprocess
-import sqlite3 as sql
+import MySQLdb as sql
 
 # Load kernel modules for 1-wire devices
 os.system( 'modprobe w1-gpio' )
@@ -22,14 +22,14 @@ device_file = device_folder + '/w1_slave'
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
 
-# Connect to SQLite database
-con = sql.connect( '/var/sqlite/sensor-data.sqlite' )
+# Connect to MySQL database
+con = sql.connect( host = "localhost", user = "rpi", passwd = "rpi", db = "sensordata" )
 cur = con.cursor()
 
-# Log data to the SQLite database
+# Log data to the MySQL database
 def logData( id, value):
     try:
-        cur.execute( "insert into sensor_data(timestamp,sensor_id,value) values(datetime('now','localtime'), {0}, {1} )".format( id, value ) )
+        cur.execute( "insert into sensor_data(sensor_id,value) values( {0}, {1} )".format( id, value ) )
         con.commit()
         return
     except:
