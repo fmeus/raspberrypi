@@ -25,6 +25,8 @@ create table sensors(
 , constraint foreign key (type_id) references sensor_types(type_id)
 , constraint foreign key (location_id) references locations(location_id)
 );
+create index type_idx on sensor_types(type_id);
+create index location_idx on locations(location_id);
 
 -- Create table: sensor_data
 create table sensor_data( 
@@ -35,6 +37,7 @@ create table sensor_data(
 , primary key (id)
 , constraint foreign key (sensor_id) references sensors(sensor_id)
 );
+create index sensor_idx on sensors(sensor_id);
 
 -- Add locations
 insert into locations(location_name) values('Bedroom');
