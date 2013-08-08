@@ -39,6 +39,15 @@ create table sensor_data(
 );
 create index sensor_idx on sensors(sensor_id);
 
+-- Create table: sensor_high_low
+create table sensor_high_low(
+  sensor_id integer not null
+, min_value real
+, max_value real
+, primary key (sensor_id)
+, constraint foreign key (sensor_id) references sensors(sensor_id)
+);
+
 -- Add locations
 insert into locations(location_name) values('Bedroom');
 insert into locations(location_name) values('Office');
@@ -58,6 +67,8 @@ insert into sensors(type_id,sensor_name,location_id) values(2,'DHT22 - Humidity'
 
 -- Create user
 create user 'rpi'@'localhost' identified by 'rpi';
+create user 'rpi'@'amun.local' identified by 'rpi';
 
 -- Grant privileges
 grant all on sensordata.* to 'rpi'@'localhost';
+grant all on sensordata.* to 'rpi'@'amun.local';
