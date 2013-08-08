@@ -19,5 +19,5 @@ function send_notification( $msg ) {
 	                 );
 	curl_exec( $ch );
 	curl_close( $ch );
-}	
+}
 ?>
