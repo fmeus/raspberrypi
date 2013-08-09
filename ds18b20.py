@@ -8,6 +8,7 @@ import RPi.GPIO as GPIO
 import urllib2 as url
 import subprocess
 import MySQLdb as sql
+import pushover
 
 # Load kernel modules for 1-wire devices
 os.system( 'modprobe w1-gpio' )
@@ -85,7 +86,7 @@ while True:
     ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
     ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
     ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
-    print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
+    # print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
     logData( 1, temp_c )
     read_dht22(22)
     time.sleep(30)
