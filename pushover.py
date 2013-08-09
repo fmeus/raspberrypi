@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import httplib
 import urllib
 import os
