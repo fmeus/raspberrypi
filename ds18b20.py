@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import glob
 import time
 import re
@@ -9,10 +8,6 @@ import urllib2 as url
 import subprocess
 import MySQLdb as sql
 import pushover
-
-# Load kernel modules for 1-wire devices
-os.system( 'modprobe w1-gpio' )
-os.system( 'modprobe w1-therm' )
 
 # Determine location of first found DS18B20 sensor 
 base_dir = '/sys/bus/w1/devices/'
