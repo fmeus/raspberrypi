@@ -18,14 +18,12 @@ device_file = device_folder + '/w1_slave'
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
 
-# Connect to MySQL database
-con = sql.connect( host = "localhost", user = "rpi", passwd = "rpi", db = "sensordata" )
-cur = con.cursor()
-
 # Log data to the MySQL database
 def logData( id, value):
     try:
+        # Insert new data
         cur.execute( "insert into sensor_data(sensor_id,value) values( {0}, {1} )".format( id, value ) )
+        # Save changes
         con.commit()
         return
     except:
@@ -61,14 +59,13 @@ def read_dht22( PiPin ):
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
-        time.sleep(0.2)
+        time.sleep( 0.2 )
         lines = read_temp_raw()
     equals_pos = lines[1].find('t=')
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
-        temp_c = float(temp_string) / 1000.0
-        temp_f = temp_c * 9.0 / 5.0 + 32.0
-        return temp_c, temp_f
+        temp_c = float( temp_string ) / 1000.0
+        return temp_c
 
 # Turn off all LEDs
 ledMode( 14, GPIO.LOW )
@@ -76,12 +73,19 @@ ledMode( 15, GPIO.LOW )
 ledMode( 18, GPIO.LOW )
 
 while True:
-    temp_c, temp_f = read_temp()
+    # Connect to MySQL database
+    con = sql.connect( host = "localhost", user = "rpi", passwd = "rpi", db = "sensordata" )
+    cur = con.cursor()
+    # Read DS18B20 (Temperature)
+    temp_c = read_temp()
+    logData( 1, temp_c )
+    # Update LED based on temperature
     ledMode( 14, GPIO.HIGH if temp_c < 27 else GPIO.LOW )
     ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
     ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
-    ts = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) 
-    # print '{0} - Temperature = {1:.2f} C ({2:.2f} F)'.format( ts, temp_c, temp_f )
-    logData( 1, temp_c )
-    read_dht22(22)
-    time.sleep(30)
+    # Read DHT22 (Temperature, Humidity)
+    read_dht22( 22 )
+    # Close MySQL connection
+    con.close()
+    # Wait seconds for next collection
+    time.sleep( 30 )
