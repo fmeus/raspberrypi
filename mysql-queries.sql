@@ -26,7 +26,7 @@ group by s.sensor_id;
 select s.sensor_id
 ,      s.sensor_name
 ,      d.value
-,      date(d.timestamp)
+,      d.timestamp
 from   sensor_data d
 ,      sensors     s
 ,      (select max(id) as id from sensor_data group by sensor_id) m
