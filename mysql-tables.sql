@@ -41,7 +41,7 @@ create table sensor_data(
 , constraint foreign key (sensor_id) references sensors(sensor_id)
 );
 create index sd_timestamp_idx on sensor_data(timestamp);
-create index ts_sensorid_idx on sensor_data(sensor_id);
+create index sd_sensorid_idx on sensor_data(sensor_id);
 
 -- Create table: sensor_high_low
 create table sensor_high_low(
