@@ -19,7 +19,7 @@
                                 ,      d.value
                                 from   sensor_data d
                                 where  d.sensor_id = ${sensor}
-                                and    timestampdiff(HOUR,d.timestamp,now()) <= ${period}
+                                and d.timestamp >= date_sub(NOW(), interval ${period} hour)
                                 order by d.timestamp" );
 
         header("Content-type: text/csv");
