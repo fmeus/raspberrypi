@@ -4,14 +4,14 @@ class Rules
 	/* Connection to MySQL database */
 	private $connection;
 
-	/* Private properties (exposed via Getter) */
-	private $_description;
+	/* Private properties */
+	private $_description; /* Exposed via getDescription() */
 	private $_preprocess;
 	private $_postprocess;
 	private $_query;
 	private $_message;
-	private $_output;
-	private $_active;
+	private $_output; /* Exposed via getOutput() */
+	private $_active; /* Exposed via getActive() */
 
 
 	private function connect( $host, $username, $password, $database )
@@ -55,7 +55,7 @@ class Rules
 
 		if ( $this->_active == 'Y' ) {
 			/* Clear any previous output */
-			$this->_output = null;
+			unsset( $this->_output );
 
 			/* Execute pre process */
 			if ( strlen( $this->_preprocess ) > 0 ) {
@@ -87,12 +87,24 @@ class Rules
 	}
 
 
-	/* Default Getter */
-	public function __get( $property ) {
-		$property = '_'.strtolower( $property );
-		if ( property_exists( $this, $property ) ) {
-			return $this->$property;
-		}
+	/* Return the value of the private property _ */
+	public function getDescription()
+	{
+		return $this->_description;
+	}
+
+
+	/* Return the value of the private property _output */
+	public function getOutput()
+	{
+		return $this->_output;
+	}
+
+
+	/* Return the value of the private property _active */
+	public function getActive()
+	{
+		return $this->_active;
 	}
 
 
@@ -101,5 +113,11 @@ class Rules
 	{
 		$this->connect( $host, $username, $password, $database );
 	}
+
+
+	/* Default Destructor */
+   function __destruct() {
+   		$this->disconnect();
+   }
 }
 ?>
