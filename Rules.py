@@ -46,22 +46,22 @@ class Rules:
 
 		if ( self.__active == 'Y' ):
 			# Clear any previous output
-			self.__output = NULL;
+			self.__output = None;
 
 			# Execute pre process
-			if ( len( self.__preprocess ) > 0 ):
+			if ( self.__preprocess is not None and self.__preprocess.len() > 0 ):
 				self.cursor.execute( self.__preprocess )
 
 			# Execute the actual rule
 			rule_result = self.cursor.execute( self.__query )
 
 			# Format the message
-			if ( self.cursor.rowcount = 1 ):
+			if ( self.cursor.rowcount == 1 ):
 				self.__output = self.__message.format( )
 				vsprintf( self.__message, self.cursor.fetchall() )
 
 			# Execute post process
-			if ( len( self.__postprocess ) > 0 ):
+			if ( self.__postprocess is not None and self.__postprocess.len() > 0 ):
 				self.cursor.execute( self.__postprocess )
 
 			# Update last usage timestamp for rule
