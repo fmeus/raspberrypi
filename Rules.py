@@ -67,7 +67,7 @@ class Rules:
 			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
 
 			# Result result message
-			return ( len( self.__output ) > 0 )
+			return ( self.__output is not None and self.__output.len() > 0 )
 
 		# Return failed indicator
 		return false;
