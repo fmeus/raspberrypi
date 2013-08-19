@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import MySQLdb as sql
 
 class Rules:
@@ -27,7 +29,7 @@ class Rules:
                               ,      rule_preproc \
                               ,      rule_postproc \
                               from   rules \
-                              where  rule_id = ${0}".format( ruleid ) )
+                              where  rule_id = {0}".format( ruleid ) )
 
 		row = self.cursor.fetchone()
 
@@ -40,7 +42,7 @@ class Rules:
 
 
 	def run_rule( self, ruleid ):
-		self.get_rule_data( self, ruleid )
+		self.get_rule_data( ruleid )
 
 		print self.__description
 		print self.__active
@@ -67,7 +69,7 @@ class Rules:
 		# 		self.cursor.execute( self.__postprocess )
 
 		# 	/* Update last usage timestamp for rule */
-		# 	self.cursor.execute( "update rules set rule_last_used=now() where rule_id = ${0}".format( ruleid ) )
+		# 	self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
 
 		# 	/* Result result message */
 		# 	return ( strlen( self.__output ) > 0 )
@@ -93,29 +95,4 @@ class Rules:
 
 
 	def __del__( self ):
-		self.disconnect( self )
-
-
-
-
-
-# #!/usr/bin/python
-# # -*- coding: utf-8 -*-
-
-# import MySQLdb as mdb
-
-# con = mdb.connect('localhost', 'testuser', 'test623', 'testdb')
-
-# with con:
-
-#     cur = con.cursor()
-#     cur.execute("SELECT * FROM Writers LIMIT 5")
-
-#     rows = cur.fetchall()
-
-#     desc = cur.description
-
-#     print "%s %3s" % (desc[0][0], desc[1][0])
-
-#     for row in rows:    
-#         print "%2s %3s" % row
+		self.disconnect()
