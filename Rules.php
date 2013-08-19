@@ -57,18 +57,22 @@ class Rules
 			$this->_output = null;
 
 			/* Execute pre process */
-			$this->connection->query( $this->_preprocess );
+			if ( strlen( $this->_preprocess ) > 0 ) {
+				$this->connection->query( $this->_preprocess );
+			}
 
 			/* Execute the actual rule */
-			$rule_result = $this->connection->query( $this->_preprocess );
+			$rule_result = $this->connection->query( $this->_query );
 
 			/* Format the message */
-			if ( $rule_result ) {
+			if ( mysqli_num_rows( $rule_result ) > 0 ) {
 				$this->_output = sprintf( $this->_message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) );
 			}
 
 			/* Execute post process */
-			$this->connection->query( $this->_postprocess );
+			if ( strlen( $this->_postprocess ) > 0 ) {
+				$this->connection->query( $this->_postprocess );
+			}
 
 			/* Update last usage timestamp for rule */
 			$this->connection->query( "update rules set rule_last_used=now() where rule_id = ${rule_id}" );
