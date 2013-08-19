@@ -11,6 +11,7 @@ class Rules
 	private $_query;
 	private $_message;
 	private $_output;
+	private $_active;
 
 
 	private function connect( $host, $username, $password, $database )
@@ -52,7 +53,7 @@ class Rules
 		/* Get rule data */
 		$this->get_rule_data( $ruleid );
 
-		if ( $this->active == 'Y' ) {
+		if ( $this->_active == 'Y' ) {
 			/* Clear any previous output */
 			$this->_output = null;
 
@@ -75,7 +76,7 @@ class Rules
 			}
 
 			/* Update last usage timestamp for rule */
-			$this->connection->query( "update rules set rule_last_used=now() where rule_id = ${rule_id}" );
+			$this->connection->query( "update rules set rule_last_used=now() where rule_id = ${ruleid}" );
 
 			/* Result result message */
 			return ( strlen( $this->_output ) > 0 );
