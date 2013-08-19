@@ -55,7 +55,7 @@ class Rules
 
 		if ( $this->_active == 'Y' ) {
 			/* Clear any previous output */
-			unset( $this->_output );
+			$this->_output = NULL;
 
 			/* Execute pre process */
 			if ( strlen( $this->_preprocess ) > 0 ) {
