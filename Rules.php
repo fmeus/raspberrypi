@@ -67,7 +67,7 @@ class Rules
 
 			/* Format the message */
 			if ( mysqli_num_rows( $rule_result ) > 0 ) {
-				$this->_output = sprintf( $this->_message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) );
+				$this->_output = vsprintf( $this->_message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) );
 			}
 
 			/* Execute post process */
