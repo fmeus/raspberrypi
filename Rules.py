@@ -44,38 +44,33 @@ class Rules:
 	def run_rule( self, ruleid ):
 		self.get_rule_data( ruleid )
 
-		print self.__description
-		print self.__active
-		print self.__query
-		print self.__message
+		if ( self.__active == 'Y' ):
+			/* Clear any previous output */
+			$this->__output = NULL;
 
-		# if ( self.__active == 'Y' ):
-		# 	/* Clear any previous output */
-		# 	$this->__output = NULL;
+			/* Execute pre process */
+			if ( strlen( self.__preprocess ) > 0 ):
+				self.cursor.execute( self.__preprocess )
 
-		# 	/* Execute pre process */
-		# 	if ( strlen( self.__preprocess ) > 0 ):
-		# 		self.cursor.execute( self.__preprocess )
+			/* Execute the actual rule */
+			$rule_result = self.cursor.execute( self.__query )
 
-		# 	/* Execute the actual rule */
-		# 	$rule_result = self.cursor.execute( self.__query )
+			/* Format the message */
+			if ( mysqli_num_rows( $rule_result ) = 1 ):
+				self.__output = vsprintf( self.__message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) )
 
-		# 	/* Format the message */
-		# 	if ( mysqli_num_rows( $rule_result ) = 1 ):
-		# 		self.__output = vsprintf( self.__message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) )
+			/* Execute post process */
+			if ( strlen( self.__postprocess ) > 0 ):
+				self.cursor.execute( self.__postprocess )
 
-		# 	/* Execute post process */
-		# 	if ( strlen( self.__postprocess ) > 0 ):
-		# 		self.cursor.execute( self.__postprocess )
+			/* Update last usage timestamp for rule */
+			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
 
-		# 	/* Update last usage timestamp for rule */
-		# 	self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
+			/* Result result message */
+			return ( strlen( self.__output ) > 0 )
 
-		# 	/* Result result message */
-		# 	return ( strlen( self.__output ) > 0 )
-
-		# /* Return failed indicator */
-		# return false;
+		/* Return failed indicator */
+		return false;
 
 
 	def getDescription( self ):
