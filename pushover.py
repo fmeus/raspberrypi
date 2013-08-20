@@ -7,13 +7,13 @@ import os
 APP_TOKEN = os.environ['PUSHOVER_APP_TOKEN']
 USER_KEY = os.environ['PUSHOVER_USER_KEY']
 
-def send_notification(msg):
+def send_notification(title,msg):
 	conn = httplib.HTTPSConnection("api.pushover.net:443")
 	conn.request("POST", "/1/messages.json",
 	  urllib.urlencode({
 	    "token": APP_TOKEN,
 	    "user": USER_KEY,
-	    "title": "RPi Environmental Data",
+	    "title": title,
 	    "message": msg,
 	    "url": "http://littlegemsoftware.com:314/chart-sensor.html",
 	    "url_title": "RPi Sensor Data"
