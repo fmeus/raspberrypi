@@ -49,7 +49,7 @@ class Rules:
 			self.__output = None;
 
 			# Execute pre process
-			if ( self.__preprocess is not None and self.__preprocess.len() > 0 ):
+			if ( self.__preprocess is not None and len( self.__preprocess ) > 0 ):
 				self.cursor.execute( self.__preprocess )
 
 			# Execute the actual rule
@@ -57,17 +57,17 @@ class Rules:
 
 			# Format the message
 			if ( self.cursor.rowcount == 1 ):
-				self.__output = self.__message % ( self.cursor.fetchall() )
+				self.__output = self.__message % ( self.cursor.fetchone() )
 
 			# Execute post process
-			if ( self.__postprocess is not None and self.__postprocess.len() > 0 ):
+			if ( self.__postprocess is not None and len( self.__postprocess ) > 0 ):
 				self.cursor.execute( self.__postprocess )
 
 			# Update last usage timestamp for rule
 			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
 
 			# Result result message
-			return ( self.__output is not None and self.__output.len() > 0 )
+			return ( self.__output is not None and len( self.__output ) > 0 )
 
 		# Return failed indicator
 		return false;
