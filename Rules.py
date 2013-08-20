@@ -57,7 +57,7 @@ class Rules:
 
 			# Format the message
 			if ( self.cursor.rowcount == 1 ):
-				self.__output = self.__message.format( self.cursor.fetchall() )
+				self.__output = self.__message % ( self.cursor.fetchall() )
 
 			# Execute post process
 			if ( self.__postprocess is not None and self.__postprocess.len() > 0 ):
