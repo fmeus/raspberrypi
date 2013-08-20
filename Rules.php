@@ -60,6 +60,9 @@ class Rules
 
 	public function run_rule( $ruleid )
 	{
+		/* Reset */
+		$this->reset();
+
 		/* Get rule data */
 		$this->get_rule_data( $ruleid );
 
