@@ -13,6 +13,16 @@ class Rules
 	private $_output; /* Exposed via getOutput() */
 	private $_active; /* Exposed via getActive() */
 
+	private function reset()
+	{
+		$this->_description = NULL;
+		$this->_preprocess = NULL;
+		$this->_postprocess = NULL;
+		$this->_query = NULL;
+		$this->_message = NULL;
+		$this->_output = NULL;
+		$this->_active = NULL;
+	}
 
 	private function connect( $host, $username, $password, $database )
 	{
