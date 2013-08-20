@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 import subprocess
 import MySQLdb as sql
 import pushover
+from Rules import Rules
 
 # Determine location of first found DS18B20 sensor 
 base_dir = '/sys/bus/w1/devices/'
@@ -16,6 +17,9 @@ device_file = device_folder + '/w1_slave'
 # Configure GPIO
 GPIO.setmode( GPIO.BCM )
 GPIO.setwarnings( False )
+
+# Setup Rules
+rf = Rules( 'localhost', 'rpi', 'rpi', 'sensordata' )
 
 # Log data to the MySQL database
 def logData( id, value):
@@ -75,16 +79,28 @@ while True:
     # Connect to MySQL database
     con = sql.connect( host = "localhost", user = "rpi", passwd = "rpi", db = "sensordata" )
     cur = con.cursor()
+
     # Read DS18B20 (Temperature)
     temp_c = read_temp()
     logData( 1, temp_c )
+
     # Update LED based on temperature
     ledMode( 14, GPIO.HIGH if temp_c < 27 else GPIO.LOW )
     ledMode( 15, GPIO.HIGH if temp_c >= 27 and temp_c < 29 else GPIO.LOW )
     ledMode( 18, GPIO.HIGH if temp_c >= 29 else GPIO.LOW )
+
     # Read DHT22 (Temperature, Humidity)
     read_dht22( 22 )
+
     # Close MySQL connection
     con.close()
+
+    # Run rule
+    rf.run_rule( 1 )
+
+    # Send notification
+    if ( rf.getOutput() is not None ):
+    	pushover.send_notification( rf.getDescription(), rf.getOutput() )
+
     # Wait seconds for next collection
     time.sleep( 30 )
