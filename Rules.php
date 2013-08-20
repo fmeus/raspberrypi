@@ -66,7 +66,7 @@ class Rules
 			$rule_result = $this->connection->query( $this->_query );
 
 			/* Format the message */
-			if ( mysqli_num_rows( $rule_result ) = 1 ) {
+			if ( mysqli_num_rows( $rule_result ) == 1 ) {
 				$this->_output = vsprintf( $this->_message, mysqli_fetch_array( $rule_result, MYSQLI_NUM ) );
 			}
 
