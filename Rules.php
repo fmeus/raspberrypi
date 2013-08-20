@@ -90,6 +90,7 @@ class Rules
 
 			/* Update last usage timestamp for rule */
 			$this->connection->query( "update rules set rule_last_used=now() where rule_id = ${ruleid}" );
+			$this->connection->commit();
 
 			/* Result result message */
 			return ( strlen( $this->_output ) > 0 );

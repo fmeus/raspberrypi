@@ -75,6 +75,7 @@ class Rules:
 
 			# Update last usage timestamp for rule
 			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
+			self.connection.commit();
 
 			# Result result message
 			return ( self.__output is not None and len( self.__output ) > 0 )
