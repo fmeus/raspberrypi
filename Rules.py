@@ -3,13 +3,14 @@
 import MySQLdb as sql
 
 class Rules:
-	__description = None
-	__preprocess = None
-	__postprocess = None
-	__query = None
-	__message = None
-	__output = None
-	__active = None
+	def reset( self ):
+		__description = None
+		__preprocess = None
+		__postprocess = None
+		__query = None
+		__message = None
+		__output = None
+		__active = None
 
 
 	def connect( self, host, username, password, database ):
@@ -42,6 +43,7 @@ class Rules:
 
 
 	def run_rule( self, ruleid ):
+		self.reset()
 		self.get_rule_data( ruleid )
 
 		if ( self.__active == 'Y' ):
