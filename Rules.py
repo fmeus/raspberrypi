@@ -3,14 +3,22 @@
 import MySQLdb as sql
 
 class Rules:
+	__description = None
+	__preprocess = None
+	__postprocess = None
+	__query = None
+	__message = None
+	__output = None
+	__active = None
+
 	def reset( self ):
-		__description = None
-		__preprocess = None
-		__postprocess = None
-		__query = None
-		__message = None
-		__output = None
-		__active = None
+		self.__description = None
+		self.__preprocess = None
+		self.__postprocess = None
+		self.__query = None
+		self.__message = None
+		self.__output = None
+		self.__active = None
 
 
 	def connect( self, host, username, password, database ):
