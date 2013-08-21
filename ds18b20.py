@@ -100,7 +100,7 @@ while True:
 
     # Send notification
     if ( rf.getOutput() is not None ):
-    	pushover.send_notification( rf.getDescription(), rf.getOutput() )
+    	pushover.send_notification( rf.getDescription(), rf.getOutput(), "http://littlegemsoftware.com:314/chart-sensor.html", "RPi Sensor Data" )
 
     # Wait seconds for next collection
     time.sleep( 30 )
