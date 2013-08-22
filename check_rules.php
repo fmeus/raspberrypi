@@ -20,4 +20,10 @@
 	if ( strlen( $rf->getOutput() ) > 0 ) {
 		send_notification( $rf->getDescription(), $rf->getOutput(), URL, URL_TITLE );
 	}
+
+	/* Run rule - Unhealthy Humidity */
+	$rf->run_rule( 4 );
+	if ( strlen( $rf->getOutput() ) > 0 ) {
+		send_notification( $rf->getDescription(), $rf->getOutput(), URL, URL_TITLE );
+	}
 ?>
