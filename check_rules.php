@@ -3,8 +3,8 @@
 	require_once( 'Rules.php' );
 	require_once( 'pushover.php' );
 
-    define( 'URL', 'http://littlegemsoftware.com:314/chart-sensor.html' );
-    define( 'URL_TITLE', 'RPi Sensor Data' );
+	define( 'URL', 'http://littlegemsoftware.com:314/chart-sensor.html' );
+	define( 'URL_TITLE', 'RPi Sensor Data' );
 
 	/* Setup Rules */
 	$rf = new Rules( 'localhost', 'rpi', 'rpi', 'sensordata' );
