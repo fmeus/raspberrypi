@@ -8,7 +8,10 @@ insert into rules(rule_desc,rule_query,rule_message,rule_preproc,rule_postproc,r
 insert into rules (rule_desc, rule_query, rule_message, rule_active) values('No Data Logged', 'select date_format( x.ts, \'%M %d, %Y at %H:%i:%s\' ) from ( select max(timestamp) as ts from sensor_data ) x where timestampdiff( MINUTE, x.ts, now() ) > 5;', 'No data has been for 5 minutes now. Last entry was on %s', 'Y');
 
 -- Rule: Unhealthy Humidity
-insert into rules (rule_desc, rule_query, rule_message, rule_active) values('Unhealthy Humidity', 'select value from sensor_data where sensor_id = 3 and ( value < 50 or value > 60 );', 'Humidity is outside the healthy range (50-60%). Humidity is %.2f%%', 'Y');
+insert into rules (rule_desc, rule_query, rule_message, rule_active) values('Unhealthy Humidity', 'select d.value from sensor_data d, (select max(id) as id from sensor_data where sensor_id = 3) c where d.id = c.id and ( d.value < 50 or d.value > 60 );', 'Humidity is outside the healthy range (50-60%). Humidity is %.2f%%', 'Y');
 
 -- Save changes
 commit;
+
+
+
