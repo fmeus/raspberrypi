@@ -43,6 +43,9 @@ create table sensor_data(
 create index sd_timestamp_idx on sensor_data(timestamp);
 create index sd_sensorid_idx on sensor_data(sensor_id);
 
+alter table sensor_data add column valid char(1) not null default 'Y' after value;
+create index sd_valid_idx on sensor_data(valid);
+
 -- Create table: sensor_high_low
 create table sensor_high_low(
   sensor_id integer not null
