@@ -5,7 +5,7 @@
 
 	define( 'URL', 'http://littlegemsoftware.com:314/chart-sensor.html' );
 	define( 'URL_TITLE', 'RPi Sensor Data' );
-	define( 'RULES_TO_RUN', serialize( array( 2, 3, 4 ) ) );
+	define( 'RULES_TO_RUN', serialize( array( 5, 2, 3, 4 ) ) );
 
 	/* Setup Rules */
 	$rf = new Rules( 'localhost', 'rpi', 'rpi', 'sensordata' );
