@@ -10,5 +10,8 @@ insert into rules (rule_desc, rule_query, rule_message, rule_active) values('No 
 -- Rule: Unhealthy Humidity
 insert into rules (rule_desc, rule_query, rule_message, rule_active) values('Unhealthy Humidity', 'select d.value from sensor_data d, (select max(id) as id from sensor_data where sensor_id = 3) c where d.id = c.id and ( d.value < 40 or d.value > 60 );', 'Humidity is outside the healthy range (40-60%%). Humidity is %.2f%%', 'Y');
 
+-- Rule: Remove Outlier Records
+insert into rules(rule_desc,rule_query,rule_message,rule_preproc,rule_postproc,rule_active) values('Invalid Data Removed','select count(*) from sensor_data where valid = \'N\';','%d records with suspect data have been removed.', 'call mark_invalid()','call delete_invalid()','Y');
+
 -- Save changes
 commit;
