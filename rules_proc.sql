@@ -51,8 +51,13 @@ end$$
 drop procedure if exists delete_invalid$$
 create procedure delete_invalid()
 begin
+	-- Store invalid data for later review
+	insert into bad_sensor_data select * from sensor_data where valid = 'N';
+
+	-- Remove invalid data
     delete from sensor_data where valid = 'N';
 
+	-- Save changes
     commit;
 end$$
 
