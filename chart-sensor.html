@@ -14,6 +14,13 @@
         <script type="text/javascript" src="./chart-sensor.js" charset="utf-8"></script>
     </head>
 <body>
+    Sensor: <select id="sensor">
+    <option value="0">All sensors</option>
+    <option value="1">DS18B20 - Temperature</option>
+    <option value="2">DHT22 - Temperature</option>
+    <option value="3">DHT22 - Humidity</option>
+    </select>
+
     Time frame: <select id="period">
     <option value="1" selected>1 Hour</option>
     <option value="2">2 Hours</option>
@@ -27,14 +34,16 @@
     </select>
     <button id="refresh">Refresh</button>
 
-    <h2>DS18B20 - Temperature</h2>
-    <div class="ds18b20"></div>
+    <div class="charts">
+        <h2>DS18B20 - Temperature</h2>
+        <div class="ds18b20"></div>
 
-    <h2>DHT22 / AM2302 - Temperature</h2>
-    <div class="dht22temp"></div>
+        <h2>DHT22 / AM2302 - Temperature</h2>
+        <div class="dht22temp"></div>
 
-    <h2>DHT22 / AM2302 - Humidity</h2>
-    <div class="dht22hum"></div>
+        <h2>DHT22 / AM2302 - Humidity</h2>
+        <div class="dht22hum"></div>
+    </div>
 
     <script type="text/javascript">
         function updateChart( period ) {
