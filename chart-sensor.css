@@ -35,6 +35,10 @@ h2 {
   shape-rendering: crispEdges;
 }
 
+circle {
+  color: silver;
+}
+
 .ds18b20, .dht22temp, .dht22hum, .rpicputemp, .rpigputemp {
     display: table-cell;
     background-color: rgb(245, 245, 245);
