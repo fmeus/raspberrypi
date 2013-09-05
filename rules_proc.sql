@@ -10,7 +10,7 @@ begin
         ,      min(value)
         ,      max(value)
         from   sensor_data
-        where   d.timestamp >= date_sub(NOW(), interval 8 hour)
+        where  timestamp >= date_sub(NOW(), interval 8 hour)
         group by sensor_id;
 
     -- Save changes
