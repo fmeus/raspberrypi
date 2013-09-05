@@ -37,7 +37,7 @@ showChart = function( area, sensor, period, unit ) {
         .x(function (d) { return x(d.timestamp); })
 
     .y(function (d) {
-        return y(d.temperature);
+        return y(d.value);
     });
 
     var svg = d3.select( area ).append("svg")
@@ -49,11 +49,11 @@ showChart = function( area, sensor, period, unit ) {
     d3.csv("/sensor-data.php?action=csv_data&id="+sensor+"&period="+period, function (error, data) {
         data.forEach(function (d) {
             d.timestamp = parseDate(d.timestamp);
-            d.temperature = +d.temperature;
+            d.value = +d.value;
         });
 
         x.domain(d3.extent(data, function (d) {return d.timestamp; })); 
-        y.domain( [d3.min(data, function (d) {return d.temperature; })-0.1,d3.max(data, function (d) {return d.temperature; })+0.1] ).nice();
+        y.domain( [d3.min(data, function (d) {return d.value; })-0.1,d3.max(data, function (d) {return d.value; })+0.1] ).nice();
 
         svg.append("g")
             .attr("class", "x axis")
@@ -85,5 +85,12 @@ showChart = function( area, sensor, period, unit ) {
             .datum(data)
             .attr("class", "line")
             .attr("d", line);
+
+        svg.selectAll("dot")
+            .data(data)
+            .enter().append("circle")
+            .attr("r", 1.5)
+            .attr("cx", function(d) { return x(d.timestamp); })
+            .attr("cy", function(d) { return y(d.value); });
     });
 };

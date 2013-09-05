@@ -15,7 +15,7 @@
     </head>
 <body>
     Sensor: <select id="sensor">
-    <option value="0">All sensors</option>
+    <option value="0" selected>All sensors</option>
     <option value="1" label="Temperature (°C)">DS18B20 - Temperature</option>
     <option value="2" label="Temperature (°C)">DHT22 - Temperature</option>
     <option value="3" label="Humidity (%)">DHT22 - Humidity</option>
@@ -54,6 +54,32 @@
     </div>
 
     <script type="text/javascript">
+        // Set inital values (also used to track changes)
+        $var optSensor = 0;
+        $var optPeriod = 1;
+
+        function updateSensorChart( sensor, period ) {
+            var $obj = $( '#sensor option[value='+sensor+']');
+    var $optText = $optObj.text();
+
+            showChart( "div.ds18b20", sensor, period, $obj.attr('unit') );
+
+        }
+$('#sensor').change(function () {
+    var $optObj = $('option:selected', $(this));
+    var $optValue = $optObj.val();
+    var $optUnit = $optObj.attr('unit');
+    var $optText = $optObj.text();
+
+    $("div.charts").append("<h2>" + $optText + " - " + $optUnit + "</h2><div class='chart" + $optValue + "'></div>");
+});
+
+$('#refresh').click(function () {
+    alert( 
+    updateChart($('#period').val());
+});
+
+
         function updateChart( period ) {
             showChart( "div.ds18b20", 1, period, "Temperature (°C)" );
             showChart( "div.dht22temp", 2, period, "Temperature (°C)" );
@@ -67,6 +93,7 @@
         $('#period').change(function() {
             updateChart( $(this).val() );
         });
+
         $('#refresh').click(function() {
             updateChart( $('#period').val() );
         });

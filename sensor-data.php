@@ -23,7 +23,7 @@
                                 order by d.timestamp" );
 
         header("Content-type: text/csv");
-        echo 'timestamp,temperature'.NEWLINE;
+        echo 'timestamp,value'.NEWLINE;
 
         while ( $row = mysqli_fetch_assoc( $results ) ) {
             printf('%s,%s'.NEWLINE, $row['timestamp'], $row['value']);
