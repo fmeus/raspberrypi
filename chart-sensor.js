@@ -31,8 +31,9 @@ showChart = function( area, sensor, period, unit ) {
         .tickFormat( d3.format(',.1f') )
         .orient("right");
 
+    // interpolate 'smoothens' the line
     var line = d3.svg.line()
-        .interpolate("basis")
+        .interpolate("cardinal")
         .x(function (d) { return x(d.timestamp); })
 
     .y(function (d) {
