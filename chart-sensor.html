@@ -16,9 +16,11 @@
 <body>
     Sensor: <select id="sensor">
     <option value="0">All sensors</option>
-    <option value="1">DS18B20 - Temperature</option>
-    <option value="2">DHT22 - Temperature</option>
-    <option value="3">DHT22 - Humidity</option>
+    <option value="1" label="Temperature (°C)">DS18B20 - Temperature</option>
+    <option value="2" label="Temperature (°C)">DHT22 - Temperature</option>
+    <option value="3" label="Humidity (%)">DHT22 - Humidity</option>
+    <option value="4" label="Temperature (°C)">RPi CPU - Temperature</option>
+    <option value="5" label="Temperature (°C)">RPi GPU - Temperature</option>
     </select>
 
     Time frame: <select id="period">
@@ -38,11 +40,17 @@
         <h2>DS18B20 - Temperature</h2>
         <div class="ds18b20"></div>
 
-        <h2>DHT22 / AM2302 - Temperature</h2>
+        <h2>DHT22 - Temperature</h2>
         <div class="dht22temp"></div>
 
-        <h2>DHT22 / AM2302 - Humidity</h2>
+        <h2>DHT22 - Humidity</h2>
         <div class="dht22hum"></div>
+
+        <h2>RPi CPU - Temperature</h2>
+        <div class="rpicputemp"></div>
+
+        <h2>RPi GPU - Temperature</h2>
+        <div class="rpigputemp"></div>
     </div>
 
     <script type="text/javascript">
@@ -50,6 +58,8 @@
             showChart( "div.ds18b20", 1, period, "Temperature (°C)" );
             showChart( "div.dht22temp", 2, period, "Temperature (°C)" );
             showChart( "div.dht22hum", 3, period, "Humidity (%)" );
+            showChart( "div.rpicputemp", 1, period, "Temperature (°C)" );
+            showChart( "div.rpigputemp", 1, period, "Temperature (°C)" );
         }
 
         updateChart( 1 );
