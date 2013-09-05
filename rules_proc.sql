@@ -24,8 +24,10 @@ begin
         select x.sensor_id
         ,      x.min_value
         ,      x.max_value
-        from   tmp_high_low x
-    on duplicate key update min_value=x.min_value, max_value=x.max_value;
+        from   dummy x
+    on duplicate key
+        update min_value=if( sensor_high_low.min_value > x.min_value, x.min_value, sensor_high_low.min_value )
+        ,      max_value=if( sensor_high_low.max_value < x.max_value, x.max_value, sensor_high_low.max_value );  
 
     -- Save changes
     commit;
