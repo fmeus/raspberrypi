@@ -33,7 +33,7 @@ showChart = function( area, sensor, period, unit ) {
 
     // interpolate 'smoothens' the line
     var line = d3.svg.line()
-        .interpolate("cardinal")
+        .interpolate("monotone")
         .x(function (d) { return x(d.timestamp); })
 
     .y(function (d) {
@@ -90,7 +90,7 @@ showChart = function( area, sensor, period, unit ) {
             .data(data)
             .enter().append("circle")
             .style("fill","purple")
-            .attr("r", 1.5)
+            .attr("r", 1.0)
             .attr("cx", function(d) { return x(d.timestamp); })
             .attr("cy", function(d) { return y(d.value); });
     });
