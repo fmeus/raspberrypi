@@ -73,6 +73,8 @@ insert into sensor_types(type_name) values('Humidity');
 insert into sensors(type_id,sensor_name,location_id) values(1,'DS18B20',2);
 insert into sensors(type_id,sensor_name,location_id) values(1,'DHT22 - Temperature',2);
 insert into sensors(type_id,sensor_name,location_id) values(2,'DHT22 - Humidity',2);
+insert into sensors(type_id,sensor_name,location_id) values(1,'RPi CPU',2);
+insert into sensors(type_id,sensor_name,location_id) values(1,'RPi GPU',2);
 
 -- Create user
 create user 'rpi'@'localhost' identified by 'rpi';
