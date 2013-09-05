@@ -42,7 +42,9 @@ def ledMode( PiPin, mode ):
 
 # Read data from the raw device
 def read_temp_raw():
-    lines = open( device_file ).read()
+    f = open( device_file, 'r' )
+    lines = f.readlines()
+    f.close()
     return lines
 
 # Get data from Raspberry Pi internal sensors
