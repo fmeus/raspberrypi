@@ -42,20 +42,30 @@ def ledMode( PiPin, mode ):
 
 # Read data from the raw device
 def read_temp_raw():
-    f = open(device_file, 'r')
-    lines = f.readlines()
-    f.close()
+    lines = open( device_file ).read()
     return lines
- 
+
+# Get data from Raspberry Pi internal sensors
+def read_rpi():
+    # Read CPU temperature
+    rpiCPU = float( open( '/sys/class/thermal/thermal_zone0/temp' ).read() ) / 1000.0
+    logData( 4, rpiCPU )
+
+    # Read GPU temperature
+    output = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])
+    rpiGPU = float( output.split( '=' )[1][:-3] )
+    logData( 5, rpiGPU )
+    return
+
 # Determine temperature and humidity from the DHT22/AM2302 sensor
 def read_dht22( PiPin ):
-    output = subprocess.check_output(["/usr/bin/nice", "-20", "/home/pi/raspberrypi/Adafruit_DHT", "2302", str(PiPin)])
-    matches = re.search("Temp =\s+([0-9.]+)", output)
+    output = subprocess.check_output( ["/usr/bin/nice", "-20", "/home/pi/raspberrypi/Adafruit_DHT", "2302", str(PiPin)] )
+    matches = re.search( "Temp =\s+([0-9.]+)", output )
     if ( matches ):
-        logData( 2, float(matches.group(1)) )
-    matches = re.search("Hum =\s+([0-9.]+)", output)
+        logData( 2, float(matches.group( 1 ) ) )
+    matches = re.search( "Hum =\s+([0-9.]+)", output )
     if ( matches ):
-        logData( 3, float(matches.group(1)) )
+        logData( 3, float( matches.group( 1 ) ) )
     return
 
 # Determine temperature from the DS18B20 sensor
@@ -64,7 +74,7 @@ def read_temp():
     while lines[0].strip()[-3:] != 'YES':
         time.sleep( 0.2 )
         lines = read_temp_raw()
-    equals_pos = lines[1].find('t=')
+    equals_pos = lines[1].find( 't=' )
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float( temp_string ) / 1000.0
