@@ -90,6 +90,9 @@ while True:
     con = sql.connect( host = "localhost", user = "rpi", passwd = "rpi", db = "sensordata" )
     cur = con.cursor()
 
+    # Read internal sensors
+    read_rpi()
+
     # Read DS18B20 (Temperature)
     temp_c = read_temp()
     logData( 1, temp_c )
