@@ -35,7 +35,7 @@ h2 {
   shape-rendering: crispEdges;
 }
 
-.ds18b20, .dht22temp, .dht22hum, .rpicputemp, .rpigputemp {
+.charting {
     display: table-cell;
     background-color: rgb(245, 245, 245);
     -webkit-border-radius: 3px;
