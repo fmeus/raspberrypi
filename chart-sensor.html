@@ -37,44 +37,58 @@
     <button id="refresh">Refresh</button>
 
     <div class="charts">
-        <h2>DS18B20 - Temperature</h2>
-        <div class="ds18b20"></div>
+        <h2 class="chart1">DS18B20 - Temperature</h2>
+        <div class="chart1"></div>
 
-        <h2>DHT22 - Temperature</h2>
-        <div class="dht22temp"></div>
+        <h2 class="chart2">DHT22 - Temperature</h2>
+        <div class="chart2"></div>
 
-        <h2>DHT22 - Humidity</h2>
-        <div class="dht22hum"></div>
+        <h2 class="chart3">DHT22 - Humidity</h2>
+        <div class="chart3"></div>
 
-        <h2>RPi CPU - Temperature</h2>
-        <div class="rpicputemp"></div>
+        <h2 class="chart4">RPi CPU - Temperature</h2>
+        <div class="chart4"></div>
 
-        <h2>RPi GPU - Temperature</h2>
-        <div class="rpigputemp"></div>
+        <h2 class="chart5">RPi GPU - Temperature</h2>
+        <div class="chart5"></div>
     </div>
 
     <script type="text/javascript">
         // Set inital values (also used to track changes)
-        $var optSensor = 0;
-        $var optPeriod = 1;
+        var $optSensor = 0;
+        var $optPeriod = 1;
 
-        function updateChart( period ) {
-            showChart( "div.ds18b20", 1, period, "Temperature (°C)" );
-            showChart( "div.dht22temp", 2, period, "Temperature (°C)" );
-            showChart( "div.dht22hum", 3, period, "Humidity (%)" );
-            showChart( "div.rpicputemp", 4, period, "Temperature (°C)" );
-            showChart( "div.rpigputemp", 5, period, "Temperature (°C)" );
+        // Refresh chart with data
+        function updateSensorChart( sensor, period ) {
+            var $obj = $( '#sensor option[value='+sensor+']');
+
+            showChart( "div.chart"+sensor, sensor, period, $obj.attr('unit') );
         }
 
-        updateChart( 1 );
+        // Trigger refresh when a selection has changed
+        $('select').change( function() {
+            $optPeriod = $( 'option:selected', $('#period') ).val();
+            $optSensor = $('option:selected', $('#sensor')).val();
 
-        $('#period').change(function() {
-            updateChart( $(this).val() );
+            // Always go through the list (need to remove unwanted pieces of html)
+            for ( var i = 1; i <= $('#sensor option').size(); i++ ) {
+                var $className = "'chart"+i+"'";
+
+                // Add or remove html related stuff
+                if ( $optSensor == 0 || $optSensor == i )
+                    // Include chart
+                } else {
+                    // Exclude chart
+                }
+
+                // Refresh chart with data
+                updateSensorChart( i, $optPeriod );
+            }
         });
 
-        $('#refresh').click(function() {
-            updateChart( $('#period').val() );
-        });
+        // Force refresh when page is loaded for the first time
+        // updateSensorChart( 1, 1 );
+        $('select').trigger('change');
     </script>
 </body>
 </html>
