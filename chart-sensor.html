@@ -68,28 +68,27 @@
         // Trigger refresh when a selection has changed
         $('select').change( function() {
             $optPeriod = $( 'option:selected', $('#period') ).val();
-            $optSensor = $('option:selected', $('#sensor')).val();
+            $optSensor = $( 'option:selected', $('#sensor') ).val();
 
             // Always go through the list (need to remove unwanted pieces of html)
             for ( var i = 1; i <= $('#sensor option').size(); i++ ) {
-                var $className = "'chart"+i+"'";
+                var $className = "chart"+i;
 
                 // Add or remove html related stuff
                 if ( $optSensor == 0 || $optSensor == i ) {
                     // Include chart
-                    // $('h2.'+$className).show();
-                    // $('div.'+$className).show();
+                    $('h2.'+$className).show();
+                    $('div.'+$className).show();
                     updateSensorChart( i, $optPeriod );
                 } else {
                     // Exclude chart
-                    // $('h2.'+$className).hide();
-                    // $('div.'+$className).hide();
+                    $('h2.'+$className).hide();
+                    $('div.'+$className).hide();
                 }
             }
         });
 
         // Force refresh when page is loaded for the first time
-        // updateSensorChart( 1, 1 );
         $('select').trigger('change');
     </script>
 </body>
