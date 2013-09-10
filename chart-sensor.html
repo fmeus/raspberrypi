@@ -15,8 +15,8 @@
     </head>
 <body>
     Sensor: <select id="sensor">
-    <option value="0" selected>All sensors</option>
-    <option value="1" label="Temperature (°C)">DS18B20 - Temperature</option>
+    <option value="0">All sensors</option>
+    <option value="1" label="Temperature (°C)" selected>DS18B20 - Temperature</option>
     <option value="2" label="Temperature (°C)">DHT22 - Temperature</option>
     <option value="3" label="Humidity (%)">DHT22 - Humidity</option>
     <option value="4" label="Temperature (°C)">RPi CPU - Temperature</option>
@@ -75,14 +75,14 @@
                 var $className = "'chart"+i+"'";
 
                 // Add or remove html related stuff
-                if ( $optSensor == 0 || $optSensor == i )
+                if ( $optSensor == 0 || $optSensor == i ) {
                     // Include chart
+                    updateSensorChart( i, $optPeriod );
                 } else {
                     // Exclude chart
+                    $('h2.'+$className).hide();
+                    $('div.'+$className).hide();
                 }
-
-                // Refresh chart with data
-                updateSensorChart( i, $optPeriod );
             }
         });
 
