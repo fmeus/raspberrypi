@@ -38,19 +38,19 @@
 
     <div class="charts">
         <h2 class="chart1">DS18B20 - Temperature</h2>
-        <div class="chart1 charting"></div>
+        <div class="chart1" id="charting"></div>
 
         <h2 class="chart2">DHT22 - Temperature</h2>
-        <div class="chart2 charting"></div>
+        <div class="chart2" id="charting"></div>
 
         <h2 class="chart3">DHT22 - Humidity</h2>
-        <div class="chart3 charting"></div>
+        <div class="chart3" id="charting"></div>
 
         <h2 class="chart4">RPi CPU - Temperature</h2>
-        <div class="chart4 charting"></div>
+        <div class="chart4" id="charting"></div>
 
         <h2 class="chart5">RPi GPU - Temperature</h2>
-        <div class="chart5 charting"></div>
+        <div class="chart5" id="charting"></div>
     </div>
 
     <script type="text/javascript">
@@ -77,13 +77,13 @@
                 // Add or remove html related stuff
                 if ( $optSensor == 0 || $optSensor == i ) {
                     // Include chart
-                    $('h2.'+$className).show();
-                    $('div.'+$className).show();
+                    // $('h2.'+$className).show();
+                    // $('div.'+$className).show();
                     updateSensorChart( i, $optPeriod );
                 } else {
                     // Exclude chart
-                    $('h2.'+$className).hide();
-                    $('div.'+$className).hide();
+                    // $('h2.'+$className).hide();
+                    // $('div.'+$className).hide();
                 }
             }
         });

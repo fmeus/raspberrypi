@@ -35,7 +35,7 @@ h2 {
   shape-rendering: crispEdges;
 }
 
-.charting {
+#charting {
     display: table-cell;
     background-color: rgb(245, 245, 245);
     -webkit-border-radius: 3px;
