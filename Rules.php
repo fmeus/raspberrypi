@@ -70,6 +70,9 @@ class Rules
 			/* Clear any previous output */
 			$this->_output = NULL;
 
+			/* Load last used data into variable */
+			$this->connection->query( "select rule_last_used into @last_used from rules where rule_id = ${ruleid}" );
+
 			/* Execute pre process */
 			if ( strlen( $this->_preprocess ) > 0 ) {
 				$this->connection->query( $this->_preprocess );
@@ -91,6 +94,9 @@ class Rules
 			/* Update last usage timestamp for rule */
 			$this->connection->query( "update rules set rule_last_used=now() where rule_id = ${ruleid}" );
 			$this->connection->commit();
+
+			/* Remove variable */
+			$this->connection->query( "set @last_used = null;" );
 
 			/* Result result message */
 			return ( strlen( $this->_output ) > 0 );

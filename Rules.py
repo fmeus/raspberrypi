@@ -58,6 +58,9 @@ class Rules:
 			# Clear any previous output
 			self.__output = None;
 
+			# Load last used data into variable
+			self.cursor.execute( "select rule_last_used into @last_used from rules where rule_id = {0}".format( ruleid ) )
+
 			# Execute pre process
 			if ( self.__preprocess is not None and len( self.__preprocess ) > 0 ):
 				self.cursor.execute( self.__preprocess )
@@ -76,6 +79,9 @@ class Rules:
 			# Update last usage timestamp for rule
 			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
 			self.connection.commit();
+
+			# Remove variable
+			self.cursor.execute( "set @last_used = null;" )
 
 			# Result result message
 			return ( self.__output is not None and len( self.__output ) > 0 )
