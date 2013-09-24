@@ -120,5 +120,8 @@ while True:
                                     "http://littlegemsoftware.com:314/chart-sensor.html", \
                                     "RPi Sensor Data" )
 
+    # Execute shell command (if any)
+    rf.runShellCmd()
+
     # Wait seconds for next collection
     time.sleep( 30 )

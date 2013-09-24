@@ -16,5 +16,6 @@
 		if ( strlen( $rf->getOutput() ) > 0 ) {
 			send_notification( $rf->getDescription(), $rf->getOutput(), URL, URL_TITLE );
 		}
+		$rf->runShellCmd();
 	}
 ?>
