@@ -12,6 +12,8 @@ class Rules:
 	__output = None
 	__active = None
 	__shellcmd = None
+	__runshell = None
+
 
 	def reset( self ):
 		self.__description = None
@@ -22,6 +24,7 @@ class Rules:
 		self.__output = None
 		self.__active = None
 		self.__shellcmd = None
+		self.__runshell = None
 
 
 	def connect( self, host, username, password, database ):
@@ -41,6 +44,7 @@ class Rules:
                               ,      rule_preproc \
                               ,      rule_postproc \
                               ,      rule_shellcmd \
+                              ,      rule_run_shell \
                               from   rules \
                               where  rule_id = {0}".format( ruleid ) )
 
@@ -53,6 +57,7 @@ class Rules:
 		self.__preprocess = row[4]
 		self.__postprocess = row[5]
 		self.__shellcmd = row[6]
+		self.__runshell = row[7]
 
 
 	def run_rule( self, ruleid ):
@@ -61,7 +66,7 @@ class Rules:
 
 		if ( self.__active == 'Y' ):
 			# Clear any previous output
-			self.__output = None;
+			self.__output = None
 
 			# Load last used data into variable
 			self.cursor.execute( "select rule_last_used into @last_used from rules where rule_id = {0}".format( ruleid ) )
@@ -83,7 +88,7 @@ class Rules:
 
 			# Update last usage timestamp for rule
 			self.cursor.execute( "update rules set rule_last_used=now() where rule_id = {0}".format( ruleid ) )
-			self.connection.commit();
+			self.connection.commit()
 
 			# Remove variable
 			self.cursor.execute( "set @last_used = null;" )
@@ -92,7 +97,7 @@ class Rules:
 			return ( self.__output is not None and len( self.__output ) > 0 )
 
 		# Return failed indicator
-		return false;
+		return false
 
 
 	def getDescription( self ):
@@ -105,7 +110,13 @@ class Rules:
 
 	def runShellCmd( self ):
 		if ( self.__shellcmd is not None and len( self.__shellcmd ) > 0 ):
-			os.system( self.__shellcmd )
+			if ( self.__runshell == 'never' ):
+				# Nothing to do
+			elif ( self.__runshell == 'always' ):
+				os.system( self.__shellcmd )
+			elif ( self.__runshell == 'results' ):
+				if ( self.__output is not None and len( self.__output ) > 0 ):
+					os.system( self.__shellcmd )
 
 
 	def getActive( self ):

@@ -23,6 +23,7 @@ class Rules
 		$this->_output = NULL;
 		$this->_active = NULL;
 		$this->_shellcmd = NULL;
+		$this->_runshell = NULL;
 	}
 
 	private function connect( $host, $username, $password, $database )
@@ -47,6 +48,7 @@ class Rules
 			                                       ,      rule_preproc
 			                                       ,      rule_postproc
 			                                       ,      rule_shellcmd
+			                                       ,      rule_run_shell
 			                                       from   rules
 			                                       where  rule_id = ${ruleid}" ) ) {
 			$row = mysqli_fetch_array( $results );
@@ -57,6 +59,7 @@ class Rules
 			$this->_preprocess = $row[4];
 			$this->_postprocess = $row[5];
 			$this->_shellcmd = $row[6];
+			$this->_runshell = $row[7];
 		}
 	}
 
@@ -128,7 +131,21 @@ class Rules
 	public function runShellCmd()
 	{
 		if ( strlen( $this->_shellcmd ) > 0 ) {
-			shell_exec( $this->_shellcmd );
+			switch ( $this->_runshell ) {
+				case 'never':
+					// Nothing to do
+					break;
+
+				case 'always':
+					shell_exec( $this->_shellcmd );
+					break;
+
+				case 'results':
+					if ( strlen( $this->_output ) > 0 ) {
+						shell_exec( $this->_shellcmd );					
+					}
+					break;
+			}
 		}
 	}
 
