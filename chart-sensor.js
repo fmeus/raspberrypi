@@ -2,7 +2,7 @@ showChart = function( area, sensor, period, unit ) {
     $( area ).empty();
 
     var margin = {top: 20, right: 50, bottom: 30, left: 50 },
-        width = 700 - margin.left - margin.right,
+        width = 800 - margin.left - margin.right,
         height = 250 - margin.top - margin.bottom;
 
     var parseDate = d3.time.format("%Y-%m-%d %X").parse;
@@ -86,13 +86,13 @@ showChart = function( area, sensor, period, unit ) {
             .attr("class", "line")
             .attr("d", line);
 
-        // svg.selectAll("dot")
-        //     .data(data)
-        //     .enter().append("circle")
-        //     .style("fill","purple")
-        //     .attr("r", 1.0)
-        //     .attr("cx", function(d) { return x(d.timestamp); })
-        //     .attr("cy", function(d) { return y(d.value); });
+        svg.selectAll("dot")
+            .data(data)
+            .enter().append("circle")
+            .style("fill","purple")
+            .attr("r", 1.0)
+            .attr("cx", function(d) { return x(d.timestamp); })
+            .attr("cy", function(d) { return y(d.value); });
 
     });
 };
