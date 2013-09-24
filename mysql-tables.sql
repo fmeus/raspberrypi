@@ -83,3 +83,18 @@ create user 'rpi'@'amun.local' identified by 'rpi';
 -- Grant privileges
 grant all on sensordata.* to 'rpi'@'localhost';
 grant all on sensordata.* to 'rpi'@'amun.local';
+
+-- Create table: rules
+create table rules(
+  rule_id         int not null auto_increment comment 'Internal ID'
+, rule_desc       char(200) not null comment 'Description of the rule'
+, rule_query      text not null comment 'Query to be used for the rule'
+, rule_message    char(200) not null comment 'Format string to be used when rule is triggered (using pfrint format)'
+, rule_active     char(1) not null default 'N' comment 'Should the rule be checked (Y/N)'
+, rule_preproc    text comment 'Process to perform before checking rule (optional, results not checked)'
+, rule_postproc   text comment 'Process to perform after checking rule (optional, results not checked)'
+, rule_last_used  timestamp comment 'When as the rule last triggered'
+, primary key (rule_id)
+);
+create index rule_idx on rules(rule_id);
+alter table rules add column rule_shellcmd text comment 'Shell command to be run (optional)' after rule_postproc;

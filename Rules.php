@@ -22,6 +22,7 @@ class Rules
 		$this->_message = NULL;
 		$this->_output = NULL;
 		$this->_active = NULL;
+		$this->_shellcmd = NULL;
 	}
 
 	private function connect( $host, $username, $password, $database )
@@ -45,6 +46,7 @@ class Rules
 			                                       ,      rule_active
 			                                       ,      rule_preproc
 			                                       ,      rule_postproc
+			                                       ,      rule_shellcmd
 			                                       from   rules
 			                                       where  rule_id = ${ruleid}" ) ) {
 			$row = mysqli_fetch_array( $results );
@@ -54,6 +56,7 @@ class Rules
 			$this->_active = $row[3];
 			$this->_preprocess = $row[4];
 			$this->_postprocess = $row[5];
+			$this->_shellcmd = $row[6];
 		}
 	}
 
@@ -118,6 +121,13 @@ class Rules
 	public function getOutput()
 	{
 		return $this->_output;
+	}
+
+
+	/* Return the value of the private property _shellcmd */
+	public function getShellCmd()
+	{
+		return $this->shellcmd;
 	}
 
 

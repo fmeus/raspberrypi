@@ -10,6 +10,7 @@ class Rules:
 	__message = None
 	__output = None
 	__active = None
+	__shellcmd = None
 
 	def reset( self ):
 		self.__description = None
@@ -19,6 +20,7 @@ class Rules:
 		self.__message = None
 		self.__output = None
 		self.__active = None
+		self.__shellcmd = None
 
 
 	def connect( self, host, username, password, database ):
@@ -37,17 +39,19 @@ class Rules:
                               ,      rule_active \
                               ,      rule_preproc \
                               ,      rule_postproc \
+                              ,      rule_shellcmd \
                               from   rules \
                               where  rule_id = {0}".format( ruleid ) )
 
 		row = self.cursor.fetchone()
 
-		self.__description = row[0];
-		self.__query = row[1];
-		self.__message = row[2];
-		self.__active = row[3];
-		self.__preprocess = row[4];
-		self.__postprocess = row[5];
+		self.__description = row[0]
+		self.__query = row[1]
+		self.__message = row[2]
+		self.__active = row[3]
+		self.__preprocess = row[4]
+		self.__postprocess = row[5]
+		self.__shellcmd = row[6]
 
 
 	def run_rule( self, ruleid ):
@@ -96,6 +100,10 @@ class Rules:
 
 	def getOutput( self ):
 		return self.__output
+
+
+	def getShellcmd( self ):
+		return self.__shellcmd
 
 
 	def getActive( self ):
