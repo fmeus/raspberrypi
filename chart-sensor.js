@@ -33,7 +33,7 @@ showChart = function( area, sensor, period, unit ) {
 
     // interpolate 'smoothens' the line
     var line = d3.svg.line()
-        .interpolate("basis")
+        .interpolate("linear")
         .x(function (d) { return x(d.timestamp); })
 
     .y(function (d) {
