@@ -124,10 +124,12 @@ class Rules
 	}
 
 
-	/* Return the value of the private property _shellcmd */
-	public function getShellCmd()
+	/* Execute the shell command specified in _shellcmd */
+	public function runShellCmd()
 	{
-		return $this->shellcmd;
+		if ( strlen( $this->_shellcmd ) > 0 ) {
+			shell_exec( $this->_shellcmd );
+		}
 	}
 
 

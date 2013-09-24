@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 import MySQLdb as sql
+import os
 
 class Rules:
 	__description = None
@@ -102,8 +103,9 @@ class Rules:
 		return self.__output
 
 
-	def getShellcmd( self ):
-		return self.__shellcmd
+	def runShellCmd( self ):
+		if ( self.__shellcmd is not None and len( self.__shellcmd ) > 0 ):
+			os.system( self.__shellcmd )
 
 
 	def getActive( self ):
