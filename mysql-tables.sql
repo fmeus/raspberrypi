@@ -98,3 +98,4 @@ create table rules(
 );
 create index rule_idx on rules(rule_id);
 alter table rules add column rule_shellcmd text comment 'Shell command to be run (optional)' after rule_postproc;
+alter table rules add column rule_run_shell enum('never','always','results') default 'never' comment 'When should shell command be run (always or on resuts)' after rule_shellcmd;
