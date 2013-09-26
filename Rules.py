@@ -112,6 +112,7 @@ class Rules:
 		if ( self.__shellcmd is not None and len( self.__shellcmd ) > 0 ):
 			if ( self.__runshell == 'never' ):
 				# Nothing to do
+				pass
 			elif ( self.__runshell == 'always' ):
 				os.system( self.__shellcmd )
 			elif ( self.__runshell == 'results' ):
