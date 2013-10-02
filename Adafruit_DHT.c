@@ -92,14 +92,14 @@ int readDHT(int type, int pin) {
   // wait for pin to drop?
   int safety = 0;
   int max_wait = 1000;
-  while ( bcm2835_gpio_lev(pin) == 1 || safety > max_wait ) {
+  while ( bcm2835_gpio_lev(pin) == 1 ) {
+    // if no answer, quit
+    if ( safety > max_wait ) {
+      return 2;
+    }
+
     usleep(1);
     safety++;
-  }
-
-  // if no answer, quit
-  if ( safety > max_wait ) {
-    return 2;
   }
 
   // read data!
